@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diwali Magic for My Bestie 🪔</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #10071f;
+  color: #fff4d6;
+  font-family: Georgia, serif;
+  text-align: center;
+  overflow-x: hidden;
+}
+
+#fireworks {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.screen {
+  display: none;
+  min-height: 100vh;
+  padding: 25px 18px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at top, #47205e, #170c2c 65%, #080411);
+  position: relative;
+  z-index: 1;
+}
+
+.screen.active {
+  display: flex;
+  animation: entrance .65s ease;
+}
+
+@keyframes entrance {
+  from { opacity: 0; transform: scale(.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+h1 {
+  color: #ffdc83;
+  text-shadow: 0 0 20px #ff9b35;
+}
+
+p {
+  max-width: 420px;
+  line-height: 1.8;
+}
+
+button {
+  border: 1px solid #ffe29a;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #ffd775, #ff923e);
+  color: #381535;
+  padding: 13px 22px;
+  font-size: 16px;
+  margin: 9px;
+  cursor: pointer;
+  box-shadow: 0 0 18px #ffbd5344;
+  transition: .2s;
+}
+
+button:active {
+  transform: scale(.92);
+}
+
+button:disabled {
+  opacity: .5;
+  cursor: default;
+}
+
+.diyas {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.diya {
+  font-size: 55px;
+  cursor: pointer;
+  filter: grayscale(1);
+  transition: .3s;
+}
+
+.diya.lit {
+  filter: none;
+  animation: flame 1s infinite alternate;
+}
+
+@keyframes flame {
+  to { filter: drop-shadow(0 0 18px orange); }
+}
+
+.gamebox {
+  border: 1px solid #ffda8b88;
+  background: #ffffff0c;
+  padding: 22px;
+  border-radius: 22px;
+  width: 100%;
+  max-width: 430px;
+  box-shadow: 0 0 30px #ffb34722;
+}
+
+#fireflyArea {
+  height: 280px;
+  background: radial-gradient(circle, #321e51, #10091f);
+  border-radius: 18px;
+  position: relative;
+  overflow: hidden;
+  margin: 15px 0;
+}
+
+.firefly {
+  position: absolute;
+  font-size: 30px;
+  cursor: pointer;
+  animation: fireflyGlow .7s infinite alternate;
+}
+
+@keyframes fireflyGlow {
+  to { filter: drop-shadow(0 0 12px yellow); }
+}
+
+.gift {
+  font-size: 65px;
+  margin: 12px;
+  cursor: pointer;
+  display: inline-block;
+  transition: .3s;
+}
+
+.gift:hover {
+  transform: rotate(-10deg) scale(1.15);
+}
+
+.gift.opened {
+  animation: giftOpen .5s;
+}
+
+@keyframes giftOpen {
+  50% { transform: scale(1.5) rotate(10deg); }
+}
+
+.memory {
+  display: grid;
+  grid-template-columns: repeat(4, 65px);
+  gap: 10px;
+  justify-content: center;
+}
+
+.memory button {
+  margin: 0;
+  width: 65px;
+  height: 65px;
+  padding: 0;
+  font-size: 28px;
+  background: #592d75;
+  color: white;
+}
+
+.memory button.matched {
+  background: #d79c45;
+}
+
+#popup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #080411dd;
+  z-index: 30;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.popupcard {
+  background: linear-gradient(145deg, #54276b, #1d1034);
+  border: 1px solid #ffda8b;
+  border-radius: 25px;
+  padding: 30px;
+  max-width: 380px;
+  width: 100%;
+  box-shadow: 0 0 40px #ffbb55;
+  animation: entrance .4s;
+}
+
+.envelope {
+  font-size: 100px;
+  cursor: pointer;
+  animation: float 1.5s infinite alternate;
+}
+
+@keyframes float {
+  to { transform: translateY(-12px) rotate(3deg); }
+}
+
+.letter {
+  background: #fff0d4;
+  color: #542343;
+  padding: 25px;
+  border-radius: 18px;
+  max-width: 450px;
+  width: 100%;
+  text-align: left;
+  line-height: 1.9;
+  white-space: pre-line;
+}
+
+#status {
+  color: #ffdc83;
+  min-height: 30px;
+}
+
+</style>
+</head>
+
+<body>
+
+<canvas id="fireworks"></canvas>
+
+<div id="popup">
+  <div class="popupcard">
+    <h2 id="popupTitle">✨ Surprise!</h2>
+    <p id="popupText"></p>
+    <button onclick="closePopup()">Continue 💖</button>
+  </div>
+</div>
+
+<!-- WELCOME -->
+
+<section class="screen active" id="home">
+
+  <div style="font-size:45px">🌙✨🪔✨🌙</div>
+
+  <h1>Happy Diwali bestie🎇 🪔</h1>
+
+  <p>This is a little suprise heheh</p>
+
+  <button onclick="go('diyaGame')">
+    Enter the magical world ✨
+  </button>
+
+</section>
+
+
+<!-- DIYA GAME -->
+
+<section class="screen" id="diyaGame">
+
+  <h1>🪔 Light the Diyas</h1>
+
+  <div class="gamebox">
+
+    <p>Tap the diyas in the correct sequence!</p>
+
+    <p>Remember this order:</p>
+
+    <h2 id="sequence">🪔 → 🪔 → 🪔</h2>
+
+    <div class="diyas">
+      <div class="diya" onclick="tapDiya(0)">🪔</div>
+      <div class="diya" onclick="tapDiya(1)">🪔</div>
+      <div class="diya" onclick="tapDiya(2)">🪔</div>
+    </div>
+
+    <p id="diyaStatus">Tap the first diya!</p>
+
+  </div>
+
+  <button id="diyaNext" disabled onclick="go('fireflyGame')">
+    Next game ✨
+  </button>
+
+</section>
+
+
+<!-- FIREFLY GAME -->
+
+<section class="screen" id="fireflyGame">
+
+  <h1>✨ Catch the Fireflies</h1>
+
+  <div class="gamebox">
+
+    <p>Catch 5 fireflies before time runs out!</p>
+
+    <h2 id="fireflyScore">Caught: 0 / 5</h2>
+
+    <h3 id="timer">Time: 15</h3>
+
+    <div id="fireflyArea"></div>
+
+    <p id="fireflyStatus">Ready? Start catching!</p>
+
+    <button onclick="startFireflies()">Start game 🦋</button>
+
+  </div>
+
+  <button id="fireflyNext" disabled onclick="go('giftGame')">
+    Next game 🎁
+  </button>
+
+</section>
+
+
+<!-- GIFT GAME -->
+
+<section class="screen" id="giftGame">
+
+  <h1>🎁 Mystery Gift Game</h1>
+
+  <div class="gamebox">
+
+    <p>One gift contains a magical friendship surprise!</p>
+
+    <div>
+      <span class="gift" onclick="chooseGift(0)">🎁</span>
+      <span class="gift" onclick="chooseGift(1)">🎀</span>
+      <span class="gift" onclick="chooseGift(2)">💝</span>
+    </div>
+
+    <p id="giftStatus">Choose your lucky gift!</p>
+
+  </div>
+
+  <button id="giftNext" disabled onclick="go('memoryGame')">
+    Next game 🧠
+  </button>
+
+</section>
+
+
+<!-- MEMORY GAME -->
+
+<section class="screen" id="memoryGame">
+
+  <h1>🌟 Diwali Memory Match</h1>
+
+  <div class="gamebox">
+
+    <p>Match all the festive pairs!</p>
+
+    <div class="memory" id="memoryBoard"></div>
+
+    <p id="memoryStatus">Find the matching pairs!</p>
+
+  </div>
+
+  <button id="memoryNext" disabled onclick="go('letterScreen')">
+    Unlock your letter 💌
+  </button>
+
+</section>
+
+
+<!-- LETTER ENVELOPE -->
+
+<section class="screen" id="letterScreen">
+
+  <h1>A Secret Letter 💌</h1>
+
+  <p>You completed all the magical games!</p>
+
+  <p>Tap the envelope to open your surprise.</p>
+
+  <div class="envelope" onclick="go('letterOpen')">💌</div>
+
+</section>
+
+
+<!-- LETTER -->
+
+<section class="screen" id="letterOpen">
+
+  <h1>For My Bestie ❤️</h1>
+
+  <div class="letter">
+    <strong>To my favourite woman</strong>
+
+    And wife hehehe
+
+    HAPPY DIWALI bestie
+
+    I hope u get alll the moneyyyyy and a richhhhh mannnn which is hot and handsome like in ur dreams
+
+    Hehehe and if a man can't grant ur little wishes come to meet i will give themmm
+
+    Become happy strong beautiful intelligent
+    Successful to..
+
+    Ofc mujhe jal ne ke liyee
+
+    No matter how many festivals come u will always be my no. 1 person and then him
+
+    Happy birthday bestie
+
+    Because being with u everyday feels like a new birth
+
+    ~ ur kaam wali 😝😝
+  </div>
+
+  <button onclick="go('finalScreen')">
+    One final surprise 🎆
+  </button>
+
+</section>
+
+
+<!-- FINAL SCREEN -->
+
+<section class="screen" id="finalScreen">
+
+  <div style="font-size:65px">🎆🪔🎇</div>
+
+  <h1>Happy Diwali, Bestie!</h1>
+
+  <p>
+    May your Diwali sparkle brighter than a thousand stars,
+    and may our friendship always stay magical. ❤️
+  </p>
+
+  <h2>✨ You are my favourite kind of magic ✨</h2>
+
+  <button onclick="bigFireworks()">
+    Celebrate again! 🎆
+  </button>
+
+  <button onclick="go('home')">
+    Relive the magic 🌙
+  </button>
+
+</section>
+
+
+<script>
+
+// SCREEN NAVIGATION
+
+function go(id) {
+
+  document.querySelectorAll('.screen').forEach(s =>
+    s.classList.remove('active')
+  );
+
+  document.getElementById(id).classList.add('active');
+
+  bigFireworks();
+}
+
+
+// POPUP
+
+function showPopup(title, text) {
+
+  document.getElementById('popupTitle').innerText = title;
+  document.getElementById('popupText').innerText = text;
+
+  document.getElementById('popup').style.display = 'flex';
+
+  bigFireworks();
+}
+
+function closePopup() {
+  document.getElementById('popup').style.display = 'none';
+}
+
+
+// DIYA SEQUENCE GAME
+
+let sequence = [];
+let diyaStep = 0;
+
+function makeSequence() {
+
+  sequence = [];
+
+  for(let i = 0; i < 3; i++) {
+    sequence.push(Math.floor(Math.random() * 3));
+  }
+
+  document.getElementById('sequence').innerText =
+    sequence.map(n => ['1️⃣','2️⃣','3️⃣'][n]).join(' → ');
+
+}
+
+makeSequence();
+
+function tapDiya(n) {
+
+  if(n === sequence[diyaStep]) {
+
+    document.querySelectorAll('.diya')[n].classList.add('lit');
+
+    diyaStep++;
+
+    document.getElementById('diyaStatus').innerText =
+      "Correct! ✨";
+
+    if(diyaStep === sequence.length) {
+
+      document.getElementById('diyaStatus').innerText =
+        "May ur life be veryyyy happy and full of surprises with me eating ur Brain";
+
+      document.getElementById('diyaNext').disabled = false;
+
+      showPopup("Wish unlocked 🪔",
+        "May ur life be veryyyy happy and full of surprises with me eating ur Brain");
+
+    }
+
+  } else {
+
+    diyaStep = 0;
+
+    document.querySelectorAll('.diya').forEach(d =>
+      d.classList.remove('lit')
+    );
+
+    document.getElementById('diyaStatus').innerText =
+      "Oops! Try the sequence again 😝";
+
+  }
+
+}
+
+
+// FIREFLY GAME
+
+let firefliesCaught = 0;
+let fireflyTime = 15;
+let fireflyInterval;
+let fireflyTimer;
+let fireflyRunning = false;
+
+const fireflyArea = document.getElementById('fireflyArea');
+
+function spawnFirefly() {
+
+  if(!fireflyRunning) return;
+
+  const f = document.createElement('span');
+
+  f.className = 'firefly';
+  f.innerText = '✨';
+
+  f.style.left = Math.random()*85+'%';
+  f.style.top = Math.random()*80+'%';
+
+  f.onclick = function() {
+
+    if(!fireflyRunning) return;
+
+    firefliesCaught++;
+
+    document.getElementById('fireflyScore').innerText =
+      `Caught: ${firefliesCaught} / 5`;
+
+    f.remove();
+
+    if(firefliesCaught >= 5) {
+
+      endFireflies(true);
+
+    } else {
+
+      spawnFirefly();
+
+    }
+
+  };
+
+  fireflyArea.appendChild(f);
+
+}
+
+function startFireflies() {
+
+  if(fireflyRunning) return;
+
+  firefliesCaught = 0;
+  fireflyTime = 15;
+  fireflyRunning = true;
+
+  fireflyArea.innerHTML = '';
+
+  document.getElementById('fireflyScore').innerText =
+    "Caught: 0 / 5";
+
+  document.getElementById('fireflyStatus').innerText =
+    "Go go go!";
+
+  document.getElementById('timer').innerText =
+    "Time: 15";
+
+  spawnFirefly();
+
+  fireflyTimer = setInterval(() => {
+
+    fireflyTime--;
+
+    document.getElementById('timer').innerText =
+      "Time: " + fireflyTime;
+
+    if(fireflyTime <= 0) {
+      endFireflies(false);
+    }
+
+  }, 1000);
+
+}
+
+function endFireflies(won) {
+
+  fireflyRunning = false;
+
+  clearInterval(fireflyTimer);
+
+  fireflyArea.innerHTML = '';
+
+  if(won) {
+
+    document.getElementById('fireflyStatus').innerText =
+      "You caught all the fireflies!";
+
+    document.getElementById('fireflyNext').disabled = false;
+
+    showPopup("Magical achievement! ✨",
+      "You caught all 5 fireflies! Your next surprise awaits.");
+
+  } else {
+
+    document.getElementById('fireflyStatus').innerText =
+      "Time's up! Try again 😝";
+
+  }
+
+}
+
+
+// MYSTERY GIFT GAME
+
+let luckyGift = Math.floor(Math.random()*3);
+let giftWon = false;
+
+function chooseGift(n) {
+
+  if(giftWon) return;
+
+  if(n === luckyGift) {
+
+    giftWon = true;
+
+    document.getElementById('giftStatus').innerText =
+      "You found the magical gift!";
+
+    document.getElementById('giftNext').disabled = false;
+
+    showPopup("Congratulations! 🎁",
+      "Our friendship means more to me than all diwali chocolates");
+
+  } else {
+
+    document.getElementById('giftStatus').innerText =
+      "Not this one! Keep trying 😝";
+
+  }
+
+}
+
+
+// MEMORY MATCH GAME
+
+const symbols = ['🪔','🎇','🌙','🎁','🪔','🎇','🌙','🎁'];
+
+let shuffled = symbols
+  .map((v,i) => ({v, sort: Math.random()}))
+  .sort((a,b) => a.sort-b.sort)
+  .map(x => x.v);
+
+let firstCard = null;
+let lockBoard = false;
+let matchedPairs = 0;
+
+const board = document.getElementById('memoryBoard');
+
+shuffled.forEach((symbol,index) => {
+
+  const card = document.createElement('button');
+
+  card.innerText = '❔';
+
+  card.dataset.symbol = symbol;
+  card.dataset.index = index;
+
+  card.onclick = () => flipCard(card);
+
+  board.appendChild(card);
+
+});
+
+function flipCard(card) {
+
+  if(lockBoard ||
+     card.classList.contains('matched') ||
+     card === firstCard) return;
+
+  card.innerText = card.dataset.symbol;
+
+  if(!firstCard) {
+
+    firstCard = card;
+    return;
+
+  }
+
+  if(firstCard.dataset.symbol === card.dataset.symbol) {
+
+    firstCard.classList.add('matched');
+    card.classList.add('matched');
+
+    firstCard = null;
+    matchedPairs++;
+
+    if(matchedPairs === 4) {
+
+      document.getElementById('memoryStatus').innerText =
+        "You matched all the pairs!";
+
+      document.getElementById('memoryNext').disabled = false;
+
+      showPopup("Memory master! 🌟",
+        "You unlocked the final friendship surprise!");
+
+    }
+
+  } else {
+
+    lockBoard = true;
+
+    const previous = firstCard;
+
+    setTimeout(() => {
+
+      previous.innerText = '❔';
+      card.innerText = '❔';
+
+      firstCard = null;
+      lockBoard = false;
+
+    }, 800);
+
+  }
+
+}
+
+
+// FIREWORKS CANVAS
+
+const canvas = document.getElementById('fireworks');
+const ctx = canvas.getContext('2d');
+
+let particles = [];
+
+function resizeCanvas() {
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+}
+
+resizeCanvas();
+
+window.addEventListener('resize', resizeCanvas);
+
+function launchFirework() {
+
+  const x = Math.random()*canvas.width;
+  const y = Math.random()*canvas.height*.6;
+
+  const colors = [
+    '#ffdf78',
+    '#ff72b6',
+    '#9d8aff',
+    '#ff934d',
+    '#ffffff'
+  ];
+
+  const color = colors[Math.floor(Math.random()*colors.length)];
+
+  for(let i=0; i<65; i++) {
+
+    const angle = Math.random()*Math.PI*2;
+    const speed = Math.random()*4+1;
+
+    particles.push({
+
+      x, y,
+
+      vx: Math.cos(angle)*speed,
+      vy: Math.sin(angle)*speed,
+
+      life: 70,
+      color
+
+    });
+
+  }
+
+}
+
+function animateFireworks() {
+
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  particles.forEach((p,i) => {
+
+    p.x += p.vx;
+    p.y += p.vy;
+
+    p.vy += .025;
+    p.life--;
+
+    ctx.globalAlpha = Math.max(0,p.life/70);
+
+    ctx.fillStyle = p.color;
+
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,2.5,0,Math.PI*2);
+    ctx.fill();
+
+    if(p.life <= 0) {
+      particles.splice(i,1);
+    }
+
+  });
+
+  ctx.globalAlpha = 1;
+
+  requestAnimationFrame(animateFireworks);
+
+}
+
+animateFireworks();
+
+function bigFireworks() {
+
+  for(let i=0; i<4; i++) {
+
+    setTimeout(launchFirework,i*250);
+
+  }
+
+}
+
+setInterval(() => {
+
+  if(Math.random() < .25) {
+    launchFirework();
+  }
+
+}, 1000);
+
+
+// FINAL CELEBRATION
+
+document.getElementById('finalScreen')
+  .addEventListener('click', function(e) {
+
+    if(e.target.tagName !== 'BUTTON') {
+      launchFirework();
+    }
+
+  });
+
+</script>
+
+</body>
+  </html>
+  
